@@ -61,7 +61,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Result<void>> resetPassword({required String email}) async {
     try {
-      final response = await _supabaseClient.auth.resetPasswordForEmail(email);
+      await _supabaseClient.auth.resetPasswordForEmail(email);
       return Success(null);
     } on supabase.AuthApiException catch (e) {
       return Failure(e.message);
