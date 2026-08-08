@@ -55,8 +55,8 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                 return ElevatedButton(
                   onPressed: () {
                     viewModel.loginCommand.execute((
-                    email: _emailController.text,
-                    password: _passwordController.text,
+                      email: _emailController.text,
+                      password: _passwordController.text,
                     ));
                   },
                   child: const Text('Login'),

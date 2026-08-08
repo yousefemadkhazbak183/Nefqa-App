@@ -32,7 +32,6 @@ class SimpleCommand<T> extends Command<T> {
   Future<void> execute() async {
     await _execute(_action);
   }
-
 }
 
 // More than one Record

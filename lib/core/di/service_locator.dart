@@ -8,24 +8,24 @@ import '../../features/auth/view_models/signup_view_model.dart';
 
 final getIt = GetIt.instance;
 
-void setupServerLocator(){
+void setupServerLocator() {
   // Supabase Client Singleton
   getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
   // Auth Repository Singleton
   getIt.registerLazySingleton<AuthRepository>(
-        () => AuthRepositoryImpl(getIt<SupabaseClient>()),
+    () => AuthRepositoryImpl(getIt<SupabaseClient>()),
   );
 
   // ViewModel factory
   getIt.registerFactory<LoginViewModel>(
-        () => LoginViewModel(getIt<AuthRepository>()),
+    () => LoginViewModel(getIt<AuthRepository>()),
   );
   getIt.registerFactory<SignupViewModel>(
-        () => SignupViewModel(getIt<AuthRepository>()),
+    () => SignupViewModel(getIt<AuthRepository>()),
   );
 
   getIt.registerFactory<ForgotPasswordViewModel>(
-        () => ForgotPasswordViewModel(getIt<AuthRepository>()),
+    () => ForgotPasswordViewModel(getIt<AuthRepository>()),
   );
 }

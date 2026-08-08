@@ -25,14 +25,16 @@ void main() {
     test('login succeeds and sets result to Success', () async {
       final fakeUser = AppUser(id: '1', email: 'test@test.com', name: 'Test');
 
-      when(() => mockAuthRepository.login(
-        email: any(named: 'email'),
-        password: any(named: 'password'),
-      )).thenAnswer((_) async => Success(fakeUser));
+      when(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Success(fakeUser));
 
       await viewModel.loginCommand.execute((
-      email: 'test@test.com',
-      password: '123456',
+        email: 'test@test.com',
+        password: '123456',
       ));
 
       expect(viewModel.loginCommand.completed, true);
@@ -40,14 +42,16 @@ void main() {
     });
 
     test('login fails and sets result to Failure', () async {
-      when(() => mockAuthRepository.login(
-        email: any(named: 'email'),
-        password: any(named: 'password'),
-      )).thenAnswer((_) async => Failure('Invalid credentials'));
+      when(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Failure('Invalid credentials'));
 
       await viewModel.loginCommand.execute((
-      email: 'wrong@test.com',
-      password: 'wrongpass',
+        email: 'wrong@test.com',
+        password: 'wrongpass',
       ));
 
       expect(viewModel.loginCommand.error, true);
