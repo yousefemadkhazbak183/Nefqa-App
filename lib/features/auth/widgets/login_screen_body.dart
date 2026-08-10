@@ -67,6 +67,12 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
             ListenableBuilder(
               listenable: viewModel.loginCommand,
               builder: (context, _) {
+                if (viewModel.loginCommand.completed) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (context.mounted) context.go('/expenses');
+                  });
+                }
+
                 if (viewModel.loginCommand.error) {
                   final result = viewModel.loginCommand.result as Failure;
                   return Padding(
