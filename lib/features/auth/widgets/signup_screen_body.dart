@@ -92,7 +92,7 @@ class _SignupScreenBodyState extends State<SignupScreenBody> {
 
             TextButton(
               onPressed: () => context.go('/login'),
-              child: const Text("Already have an account? Login#"),
+              child: const Text("Already have an account? Login"),
             ),
           ],
         ),

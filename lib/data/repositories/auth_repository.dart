@@ -18,6 +18,7 @@ abstract class AuthRepository {
   Future<Result<void>> logout();
 
   Future<Result<void>> resetPassword({required String email});
+  String? getCurrentUserId();
 }
 
 // AuthRepository Impl
@@ -91,5 +92,10 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (e) {
       return Failure("An unexpected error occurred.");
     }
+  }
+
+  @override
+  String? getCurrentUserId() {
+    return _supabaseClient.auth.currentUser?.id;
   }
 }
