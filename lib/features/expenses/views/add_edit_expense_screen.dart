@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nefqa/features/expenses/view_models/add_edit_expenses_view_model.dart';
 import 'package:provider/provider.dart';
 import '../../../core/di/service_locator.dart';
 import '../../../data/models/expense.dart';
+import '../view_models/add_edit_expenses_view_model.dart';
 import '../widgets/add_edit_expense_screen_body.dart';
 
 class AddEditExpenseScreen extends StatelessWidget {
@@ -13,7 +13,7 @@ class AddEditExpenseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => getIt<AddEditExpensesViewModel>(param1: existingExpense),
+      create: (_) => getIt<AddEditExpenseViewModel>(param1: existingExpense),
       child: const AddEditExpenseScreenBody(),
     );
   }

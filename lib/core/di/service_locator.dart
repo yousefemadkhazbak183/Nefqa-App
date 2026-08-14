@@ -1,16 +1,18 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:nefqa/features/expenses/view_models/add_edit_expenses_view_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../data/models/expense.dart';
+import '../network/expenses_data_notifier.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/expense_local_data_source.dart';
 import '../../data/repositories/expense_remote_data_source.dart';
 import '../../data/repositories/expense_repository.dart';
+import '../../data/models/expense.dart';
 import '../../features/auth/view_models/login_view_model.dart';
 import '../../features/auth/view_models/signup_view_model.dart';
 import '../../features/auth/view_models/forget_password_view_model.dart';
 import '../../features/expenses/view_models/expenses_list_view_model.dart';
+import '../../features/expenses/view_models/add_edit_expenses_view_model.dart';
+import '../../features/statistics/view_models/statistics_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -58,19 +60,36 @@ void setupServiceLocator() {
     ),
   );
 
+  // Cross-feature data change notifier — Singleton
+  getIt.registerLazySingleton<ExpensesDataNotifier>(
+    () => ExpensesDataNotifier(),
+  );
+
   // Expenses ViewModels — Factory
   getIt.registerFactory<ExpensesListViewModel>(
     () => ExpensesListViewModel(
       getIt<ExpenseRepository>(),
       getIt<AuthRepository>(),
+      getIt<ExpensesDataNotifier>(),
     ),
   );
 
-  getIt.registerFactoryParam<AddEditExpensesViewModel, Expense?, void>(
-    (existingExpense, _) => AddEditExpensesViewModel(
+  getIt.registerFactoryParam<AddEditExpenseViewModel, Expense?, void>(
+    (existingExpense, _) => AddEditExpenseViewModel(
       getIt<ExpenseRepository>(),
       getIt<AuthRepository>(),
+      getIt<ExpensesDataNotifier>(),
       existingExpense: existingExpense,
+    ),
+  );
+
+  // --- Statistics ---
+
+  getIt.registerFactory<StatisticsViewModel>(
+    () => StatisticsViewModel(
+      getIt<ExpenseRepository>(),
+      getIt<AuthRepository>(),
+      getIt<ExpensesDataNotifier>(),
     ),
   );
 }
