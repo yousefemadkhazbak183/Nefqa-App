@@ -1,34 +1,44 @@
 import 'package:flutter/foundation.dart';
-import 'package:nefqa/core/network/command.dart';
-import 'package:nefqa/core/network/result.dart';
-import 'package:nefqa/data/models/expense.dart';
-import 'package:nefqa/data/repositories/auth_repository.dart';
-import 'package:nefqa/data/repositories/expense_repository.dart';
+import '../../../core/network/command.dart';
+import '../../../core/network/result.dart';
+import '../../../core/network/expenses_data_notifier.dart';
+import '../../../data/models/expense.dart';
+import '../../../data/repositories/auth_repository.dart';
+import '../../../data/repositories/expense_repository.dart';
 
 class ExpensesListViewModel extends ChangeNotifier {
   final ExpenseRepository _expenseRepository;
   final AuthRepository _authRepository;
+  final ExpensesDataNotifier _dataNotifier;
 
-  ExpensesListViewModel(this._expenseRepository, this._authRepository) {
-    loadExpensesCommand = SimpleCommand<List<Expense>>(_loadExpensesCommand);
-    deleteExpensesCommand = ParameterizedCommand<void, int>(_deleteExpenses);
+  ExpensesListViewModel(
+    this._expenseRepository,
+    this._authRepository,
+    this._dataNotifier,
+  ) {
+    loadExpensesCommand = SimpleCommand<List<Expense>>(_loadExpenses);
+    deleteExpenseCommand = ParameterizedCommand<void, int>(_deleteExpense);
   }
-  late final SimpleCommand<List<Expense>> loadExpensesCommand;
-  late final ParameterizedCommand<void, int> deleteExpensesCommand;
 
-  Future<Result<List<Expense>>> _loadExpensesCommand() async {
+  late final SimpleCommand<List<Expense>> loadExpensesCommand;
+  late final ParameterizedCommand<void, int> deleteExpenseCommand;
+
+  Future<Result<List<Expense>>> _loadExpenses() async {
     final userId = _authRepository.getCurrentUserId();
     if (userId == null) {
-      return Failure("User logged in");
+      return Failure('User not logged in.');
     }
     return _expenseRepository.getExpense(userId);
   }
 
-  Future<Result<void>> _deleteExpenses(int id) async {
+  Future<Result<void>> _deleteExpense(int id) async {
     final result = await _expenseRepository.deleteExpense(id);
+
     if (result is Success<void>) {
       await loadExpensesCommand.execute();
+      _dataNotifier.notifyExpensesChanged();
     }
+
     return result;
   }
 }

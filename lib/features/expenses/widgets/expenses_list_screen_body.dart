@@ -68,7 +68,7 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
                     }
                   },
                   onLongPress: () {
-                    viewModel.deleteExpensesCommand.execute(expense.id!);
+                    viewModel.deleteExpenseCommand.execute(expense.id!);
                   },
                 );
               },

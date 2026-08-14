@@ -22,7 +22,7 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
   @override
   void initState() {
     super.initState();
-    final viewModel = context.read<AddEditExpensesViewModel>();
+    final viewModel = context.read<AddEditExpenseViewModel>();
     final existing = viewModel.existingExpense;
 
     if (existing != null) {
@@ -55,7 +55,7 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<AddEditExpensesViewModel>();
+    final viewModel = context.watch<AddEditExpenseViewModel>();
 
     return Scaffold(
       appBar: AppBar(

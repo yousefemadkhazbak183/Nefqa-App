@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nefqa/core/enum/expense_category.dart';
 import 'package:nefqa/core/network/result.dart';
+import 'package:nefqa/core/network/expenses_data_notifier.dart';
 import 'package:nefqa/data/models/expense.dart';
 import 'package:nefqa/data/repositories/auth_repository.dart';
 import 'package:nefqa/data/repositories/expense_repository.dart';
@@ -14,6 +15,7 @@ class MockAuthRepository extends Mock implements AuthRepository {}
 void main() {
   late MockExpenseRepository mockExpenseRepository;
   late MockAuthRepository mockAuthRepository;
+  late ExpensesDataNotifier dataNotifier;
   late ExpensesListViewModel viewModel;
 
   final fakeExpense = Expense(
@@ -27,12 +29,14 @@ void main() {
   setUp(() {
     mockExpenseRepository = MockExpenseRepository();
     mockAuthRepository = MockAuthRepository();
+    dataNotifier = ExpensesDataNotifier();
 
     when(() => mockAuthRepository.getCurrentUserId()).thenReturn('user-1');
 
     viewModel = ExpensesListViewModel(
       mockExpenseRepository,
       mockAuthRepository,
+      dataNotifier,
     );
   });
 
@@ -68,7 +72,7 @@ void main() {
         () => mockExpenseRepository.getExpense('user-1'),
       ).thenAnswer((_) async => Success([]));
 
-      await viewModel.deleteExpensesCommand.execute(1);
+      await viewModel.deleteExpenseCommand.execute(1);
 
       verify(() => mockExpenseRepository.deleteExpense(1)).called(1);
       verify(() => mockExpenseRepository.getExpense('user-1')).called(1);
