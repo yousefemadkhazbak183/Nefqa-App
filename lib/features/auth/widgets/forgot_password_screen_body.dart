@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/network/result.dart';
+import '../../../core/theme/app_colors.dart';
 import '../view_models/forget_password_view_model.dart';
 
 class ForgotPasswordScreenBody extends StatefulWidget {
@@ -25,14 +26,34 @@ class _ForgotPasswordScreenBodyState extends State<ForgotPasswordScreenBody> {
     final viewModel = context.watch<ForgotPasswordViewModel>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Reset Password')),
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              'Reset password',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary(context),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              "We'll send you a link to reset your password",
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.textSecondary(context),
+              ),
+            ),
+            const SizedBox(height: 32),
+
             TextField(
               controller: _emailController,
+              style: TextStyle(color: AppColors.textPrimary(context)),
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 24),
@@ -41,23 +62,21 @@ class _ForgotPasswordScreenBodyState extends State<ForgotPasswordScreenBody> {
               listenable: viewModel.resetPasswordCommand,
               builder: (context, _) {
                 if (viewModel.resetPasswordCommand.running) {
-                  return const CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator());
                 }
-
                 if (viewModel.resetPasswordCommand.completed) {
-                  return const Text(
+                  return Text(
                     'Check your email for reset instructions.',
-                    style: TextStyle(color: Colors.green),
+                    style: TextStyle(color: AppColors.categoryTeal),
                   );
                 }
-
                 return ElevatedButton(
                   onPressed: () {
                     viewModel.resetPasswordCommand.execute(
                       _emailController.text,
                     );
                   },
-                  child: const Text('Send Reset Email'),
+                  child: const Text('Send reset email'),
                 );
               },
             ),
@@ -72,7 +91,7 @@ class _ForgotPasswordScreenBodyState extends State<ForgotPasswordScreenBody> {
                     padding: const EdgeInsets.only(top: 12),
                     child: Text(
                       result.message,
-                      style: const TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.redAccent),
                     ),
                   );
                 }

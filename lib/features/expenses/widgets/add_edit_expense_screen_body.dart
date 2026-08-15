@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nefqa/features/expenses/view_models/add_edit_expenses_view_model.dart';
+import 'package:nefqa/core/enum/expense_category.dart';
 import 'package:provider/provider.dart';
-import '../../../core/enum/expense_category.dart';
 import '../../../core/network/result.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/category_style.dart';
+import '../view_models/add_edit_expenses_view_model.dart';
 
 class AddEditExpenseScreenBody extends StatefulWidget {
   const AddEditExpenseScreenBody({super.key});
@@ -47,10 +49,7 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
       firstDate: DateTime(2020),
       lastDate: DateTime.now(),
     );
-
-    if (picked != null) {
-      setState(() => _selectedDate = picked);
-    }
+    if (picked != null) setState(() => _selectedDate = picked);
   }
 
   @override
@@ -59,54 +58,110 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(viewModel.isEditing ? 'Edit Expense' : 'Add Expense'),
+        title: Text(viewModel.isEditing ? 'Edit expense' : 'Add expense'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
               controller: _amountController,
-              decoration: const InputDecoration(labelText: 'Amount'),
               keyboardType: TextInputType.number,
+              style: TextStyle(
+                color: AppColors.textPrimary(context),
+                fontSize: 22,
+              ),
+              decoration: const InputDecoration(
+                labelText: 'Amount',
+                suffixText: 'EGP',
+              ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
-            DropdownButtonFormField<ExpenseCategory>(
-              initialValue: _selectedCategory,
-              decoration: const InputDecoration(labelText: 'Category'),
-              items: ExpenseCategory.values.map((category) {
-                return DropdownMenuItem(
-                  value: category,
-                  child: Text(category.toLabel()),
+            Text(
+              'Category',
+              style: TextStyle(
+                fontSize: 13,
+                color: AppColors.textSecondary(context),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: ExpenseCategory.values.map((category) {
+                final selected = category == _selectedCategory;
+                final color = categoryColor(category);
+                return GestureDetector(
+                  onTap: () => setState(() => _selectedCategory = category),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? color.withValues(alpha: 0.18)
+                          : AppColors.surface(context),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: selected ? color : Colors.transparent,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(categoryIcon(category), size: 16, color: color),
+                        const SizedBox(width: 6),
+                        Text(
+                          category.toLabel(),
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: selected
+                                ? AppColors.textPrimary(context)
+                                : AppColors.textSecondary(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               }).toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() => _selectedCategory = value);
-                }
-              },
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Date: ${_selectedDate.toLocal()}'.split(' ')[0]),
-                TextButton(
-                  onPressed: _pickDate,
-                  child: const Text('Change Date'),
-                ),
-              ],
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              decoration: BoxDecoration(
+                color: AppColors.surface(context),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.calendar_today_rounded,
+                    size: 16,
+                    color: AppColors.textSecondary(context),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                    style: TextStyle(color: AppColors.textPrimary(context)),
+                  ),
+                  const Spacer(),
+                  TextButton(onPressed: _pickDate, child: const Text('Change')),
+                ],
+              ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
             TextField(
               controller: _noteController,
+              style: TextStyle(color: AppColors.textPrimary(context)),
               decoration: const InputDecoration(labelText: 'Note (optional)'),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
 
             ListenableBuilder(
               listenable: viewModel.saveCommand,
@@ -114,7 +169,6 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
                 if (viewModel.saveCommand.running) {
                   return const Center(child: CircularProgressIndicator());
                 }
-
                 return ElevatedButton(
                   onPressed: () {
                     final amount = double.tryParse(_amountController.text);
@@ -129,7 +183,9 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
                           : _noteController.text,
                     ));
                   },
-                  child: Text(viewModel.isEditing ? 'Save Changes' : 'Add'),
+                  child: Text(
+                    viewModel.isEditing ? 'Save changes' : 'Add expense',
+                  ),
                 );
               },
             ),
@@ -142,14 +198,13 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
                     if (context.mounted) context.pop();
                   });
                 }
-
                 if (viewModel.saveCommand.error) {
                   final result = viewModel.saveCommand.result as Failure;
                   return Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Text(
                       result.message,
-                      style: const TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.redAccent),
                     ),
                   );
                 }
