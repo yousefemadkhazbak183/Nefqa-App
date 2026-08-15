@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../core/network/result.dart';
+import '../../../core/theme/app_colors.dart';
 import '../view_models/login_view_model.dart';
 
 class LoginScreenBody extends StatefulWidget {
@@ -27,78 +28,107 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
     final viewModel = context.watch<LoginViewModel>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 24),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Welcome back',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary(context),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Log in to continue tracking your expenses',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textSecondary(context),
+                ),
+              ),
+              const SizedBox(height: 32),
 
-            ListenableBuilder(
-              listenable: viewModel.loginCommand,
-              builder: (context, _) {
-                if (viewModel.loginCommand.running) {
-                  return const CircularProgressIndicator();
-                }
+              TextField(
+                controller: _emailController,
+                style: TextStyle(color: AppColors.textPrimary(context)),
+                decoration: const InputDecoration(labelText: 'Email'),
+              ),
+              const SizedBox(height: 14),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                style: TextStyle(color: AppColors.textPrimary(context)),
+                decoration: const InputDecoration(labelText: 'Password'),
+              ),
+              const SizedBox(height: 24),
 
-                return ElevatedButton(
-                  onPressed: () {
-                    viewModel.loginCommand.execute((
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    ));
-                  },
-                  child: const Text('Login'),
-                );
-              },
-            ),
-
-            ListenableBuilder(
-              listenable: viewModel.loginCommand,
-              builder: (context, _) {
-                if (viewModel.loginCommand.completed) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (context.mounted) context.go('/expenses');
-                  });
-                }
-
-                if (viewModel.loginCommand.error) {
-                  final result = viewModel.loginCommand.result as Failure;
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Text(
-                      result.message,
-                      style: const TextStyle(color: Colors.red),
-                    ),
+              ListenableBuilder(
+                listenable: viewModel.loginCommand,
+                builder: (context, _) {
+                  if (viewModel.loginCommand.running) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return ElevatedButton(
+                    onPressed: () {
+                      viewModel.loginCommand.execute((
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ));
+                    },
+                    child: const Text('Log in'),
                   );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+                },
+              ),
 
-            const SizedBox(height: 16),
+              ListenableBuilder(
+                listenable: viewModel.loginCommand,
+                builder: (context, _) {
+                  if (viewModel.loginCommand.completed) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (context.mounted) context.go('/expenses');
+                    });
+                  }
+                  if (viewModel.loginCommand.error) {
+                    final result = viewModel.loginCommand.result as Failure;
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Text(
+                        result.message,
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
 
-            TextButton(
-              onPressed: () => context.go('/signup'),
-              child: const Text("Don't have an account? Sign up"),
-            ),
+              const SizedBox(height: 20),
 
-            TextButton(
-              onPressed: () => context.go('/forgot-password'),
-              child: const Text('Forgot password?'),
-            ),
-          ],
+              Center(
+                child: TextButton(
+                  onPressed: () => context.go('/signup'),
+                  child: Text(
+                    "Don't have an account? Sign up",
+                    style: TextStyle(color: AppColors.textSecondary(context)),
+                  ),
+                ),
+              ),
+              Center(
+                child: TextButton(
+                  onPressed: () => context.go('/forgot-password'),
+                  child: Text(
+                    'Forgot password?',
+                    style: TextStyle(color: AppColors.textSecondary(context)),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
