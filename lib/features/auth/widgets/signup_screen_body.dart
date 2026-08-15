@@ -83,9 +83,9 @@ class _SignupScreenBodyState extends State<SignupScreenBody> {
                 return ElevatedButton(
                   onPressed: () {
                     viewModel.signUpCommand.execute((
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                    name: _nameController.text,
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                      name: _nameController.text,
                     ));
                   },
                   child: const Text('Sign up'),

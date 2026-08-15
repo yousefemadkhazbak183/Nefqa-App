@@ -26,7 +26,9 @@ class AppTheme {
           backgroundColor: AppColors.accentDark,
           foregroundColor: AppColors.backgroundDark,
           minimumSize: const Size.fromHeight(48),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -71,7 +73,9 @@ class AppTheme {
           backgroundColor: AppColors.accentLight,
           foregroundColor: AppColors.backgroundLight,
           minimumSize: const Size.fromHeight(48),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
