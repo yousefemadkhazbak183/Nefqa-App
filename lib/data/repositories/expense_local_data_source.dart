@@ -22,7 +22,7 @@ class ExpenseLocalDataSource {
         return db.execute('''
           CREATE TABLE expenses(
             id INTEGER PRIMARY KEY,
-            userId TEXT,
+            user_id TEXT,
             amount REAL,
             category TEXT,
             date TEXT,
@@ -37,7 +37,7 @@ class ExpenseLocalDataSource {
     final db = await _db;
     final maps = await db.query(
       'expenses',
-      where: 'userId = ?',
+      where: 'user_id = ?',
       whereArgs: [userId],
     );
 

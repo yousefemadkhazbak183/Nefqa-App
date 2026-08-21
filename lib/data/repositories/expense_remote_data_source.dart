@@ -1,61 +1,45 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '../../core/network/api_constants.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import '../models/expense.dart';
 
 class ExpenseRemoteDataSource {
-  final http.Client _client;
+  final supabase.SupabaseClient _supabaseClient;
 
-  ExpenseRemoteDataSource(this._client);
+  ExpenseRemoteDataSource(this._supabaseClient);
 
   Future<List<Expense>> getExpenses(String userId) async {
-    final uri = Uri.parse('${ApiConstants.baseUrl}/expenses?userId=$userId');
-    final response = await _client.get(uri);
+    final response = await _supabaseClient
+        .from('expenses')
+        .select()
+        .eq('user_id', userId)
+        .order('date', ascending: false);
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to fetch expenses');
-    }
-
-    final List<dynamic> data = jsonDecode(response.body);
-    return data.map((json) => Expense.fromJson(json)).toList();
+    return (response as List).map((json) => Expense.fromJson(json)).toList();
   }
 
   Future<Expense> addExpense(Expense expense) async {
-    final uri = Uri.parse('${ApiConstants.baseUrl}/expenses');
-    final response = await _client.post(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(expense.toJson()),
-    );
+    final json = expense.toJson()..remove('id');
 
-    if (response.statusCode != 201) {
-      throw Exception('Failed to add expense');
-    }
+    final response = await _supabaseClient
+        .from('expenses')
+        .insert(json)
+        .select()
+        .single();
 
-    return Expense.fromJson(jsonDecode(response.body));
+    return Expense.fromJson(response);
   }
 
   Future<Expense> updateExpense(Expense expense) async {
-    final uri = Uri.parse('${ApiConstants.baseUrl}/expenses/${expense.id}');
-    final response = await _client.put(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(expense.toJson()),
-    );
+    final response = await _supabaseClient
+        .from('expenses')
+        .update(expense.toJson())
+        .eq('id', expense.id!)
+        .select()
+        .single();
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update expense');
-    }
-
-    return Expense.fromJson(jsonDecode(response.body));
+    return Expense.fromJson(response);
   }
 
   Future<void> deleteExpense(int id) async {
-    final uri = Uri.parse('${ApiConstants.baseUrl}/expenses/$id');
-    final response = await _client.delete(uri);
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to delete expense');
-    }
+    await _supabaseClient.from('expenses').delete().eq('id', id);
   }
 }

@@ -43,7 +43,7 @@ void main() {
   group('ExpensesListViewModel', () {
     test('loads expenses successfully', () async {
       when(
-        () => mockExpenseRepository.getExpense('user-1'),
+        () => mockExpenseRepository.getExpenses('user-1'),
       ).thenAnswer((_) async => Success([fakeExpense]));
 
       await viewModel.loadExpensesCommand.execute();
@@ -56,7 +56,7 @@ void main() {
 
     test('fails when repository returns Failure', () async {
       when(
-        () => mockExpenseRepository.getExpense('user-1'),
+        () => mockExpenseRepository.getExpenses('user-1'),
       ).thenAnswer((_) async => Failure('Network error'));
 
       await viewModel.loadExpensesCommand.execute();
@@ -69,13 +69,13 @@ void main() {
         () => mockExpenseRepository.deleteExpense(1),
       ).thenAnswer((_) async => Success(null));
       when(
-        () => mockExpenseRepository.getExpense('user-1'),
+        () => mockExpenseRepository.getExpenses('user-1'),
       ).thenAnswer((_) async => Success([]));
 
       await viewModel.deleteExpenseCommand.execute(1);
 
       verify(() => mockExpenseRepository.deleteExpense(1)).called(1);
-      verify(() => mockExpenseRepository.getExpense('user-1')).called(1);
+      verify(() => mockExpenseRepository.getExpenses('user-1')).called(1);
     });
   });
 }

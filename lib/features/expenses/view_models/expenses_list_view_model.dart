@@ -28,7 +28,7 @@ class ExpensesListViewModel extends ChangeNotifier {
     if (userId == null) {
       return Failure('User not logged in.');
     }
-    return _expenseRepository.getExpense(userId);
+    return _expenseRepository.getExpenses(userId);
   }
 
   Future<Result<void>> _deleteExpense(int id) async {

@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../network/expenses_data_notifier.dart';
+import '../theme/theme_notifier.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/expense_local_data_source.dart';
 import '../../data/repositories/expense_remote_data_source.dart';
@@ -13,11 +13,12 @@ import '../../features/auth/view_models/forget_password_view_model.dart';
 import '../../features/expenses/view_models/expenses_list_view_model.dart';
 import '../../features/expenses/view_models/add_edit_expenses_view_model.dart';
 import '../../features/statistics/view_models/statistics_view_model.dart';
-import '../theme/theme_notifier.dart';
 
 final getIt = GetIt.instance;
 
 void setupServiceLocator() {
+  getIt.registerLazySingleton<ThemeNotifier>(() => ThemeNotifier());
+
   // Supabase Client — Singleton
   getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
@@ -41,12 +42,9 @@ void setupServiceLocator() {
 
   // --- Expenses ---
 
-  // HTTP Client — Singleton
-  getIt.registerLazySingleton<http.Client>(() => http.Client());
-
   // Data Sources — Singleton
   getIt.registerLazySingleton<ExpenseRemoteDataSource>(
-    () => ExpenseRemoteDataSource(getIt<http.Client>()),
+    () => ExpenseRemoteDataSource(getIt<SupabaseClient>()),
   );
 
   getIt.registerLazySingleton<ExpenseLocalDataSource>(
@@ -56,8 +54,8 @@ void setupServiceLocator() {
   // Expense Repository — Singleton
   getIt.registerLazySingleton<ExpenseRepository>(
     () => ExpenseRepositoryImpl(
-      getIt<ExpenseLocalDataSource>(),
       getIt<ExpenseRemoteDataSource>(),
+      getIt<ExpenseLocalDataSource>(),
     ),
   );
 
@@ -93,5 +91,4 @@ void setupServiceLocator() {
       getIt<ExpensesDataNotifier>(),
     ),
   );
-  getIt.registerLazySingleton<ThemeNotifier>(() => ThemeNotifier());
 }
