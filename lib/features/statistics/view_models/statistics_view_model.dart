@@ -40,7 +40,7 @@ class StatisticsViewModel extends ChangeNotifier {
       return Failure('User not logged in.');
     }
 
-    final result = await _expenseRepository.getExpense(userId);
+    final result = await _expenseRepository.getExpenses(userId);
 
     if (result is Failure<List<Expense>>) {
       return Failure(result.message);

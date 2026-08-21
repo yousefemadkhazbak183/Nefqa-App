@@ -20,7 +20,7 @@ class Expense {
   factory Expense.fromJson(Map<String, dynamic> json) {
     return Expense(
       id: json['id'] as int?,
-      userId: json['userId'] as String,
+      userId: json['user_id'] as String,
       amount: (json['amount'] as num).toDouble(),
       category: ExpenseCategoryX.fromLabel(json['category'] as String),
       date: DateTime.parse(json['date'] as String),
@@ -31,10 +31,10 @@ class Expense {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'userId': userId,
+      'user_id': userId,
       'amount': amount,
       'category': category.toLabel(),
-      'date': date.toIso8601String(),
+      'date': date.toIso8601String().split('T')[0],
       'note': note,
     };
   }

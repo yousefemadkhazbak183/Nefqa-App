@@ -60,7 +60,7 @@ void main() {
   group('StatisticsViewModel', () {
     test('calculates total and per-category totals correctly', () async {
       when(
-        () => mockExpenseRepository.getExpense('user-1'),
+        () => mockExpenseRepository.getExpenses('user-1'),
       ).thenAnswer((_) async => Success(expenses));
 
       await viewModel.loadStatisticsCommand.execute();
@@ -77,7 +77,7 @@ void main() {
 
     test('fails when repository returns Failure', () async {
       when(
-        () => mockExpenseRepository.getExpense('user-1'),
+        () => mockExpenseRepository.getExpenses('user-1'),
       ).thenAnswer((_) async => Failure('Network error'));
 
       await viewModel.loadStatisticsCommand.execute();
@@ -87,14 +87,14 @@ void main() {
 
     test('automatically reloads when ExpensesDataNotifier fires', () async {
       when(
-        () => mockExpenseRepository.getExpense('user-1'),
+        () => mockExpenseRepository.getExpenses('user-1'),
       ).thenAnswer((_) async => Success(expenses));
 
       dataNotifier.notifyExpensesChanged();
 
       await Future.delayed(Duration.zero);
 
-      verify(() => mockExpenseRepository.getExpense('user-1')).called(1);
+      verify(() => mockExpenseRepository.getExpenses('user-1')).called(1);
     });
   });
 }
