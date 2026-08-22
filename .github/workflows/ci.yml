@@ -70,3 +70,13 @@ jobs:
         with:
           name: nafqa-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Create/Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: "Latest Build"
+          body: "Automatically updated build from the latest push to main."
+          files: build/app/outputs/flutter-apk/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
