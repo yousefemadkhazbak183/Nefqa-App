@@ -13,6 +13,7 @@ import '../../features/auth/view_models/forget_password_view_model.dart';
 import '../../features/expenses/view_models/expenses_list_view_model.dart';
 import '../../features/expenses/view_models/add_edit_expenses_view_model.dart';
 import '../../features/statistics/view_models/statistics_view_model.dart';
+import '../network/sync_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -88,6 +89,13 @@ void setupServiceLocator() {
     () => StatisticsViewModel(
       getIt<ExpenseRepository>(),
       getIt<AuthRepository>(),
+      getIt<ExpensesDataNotifier>(),
+    ),
+  );
+  getIt.registerLazySingleton<SyncService>(
+    () => SyncService(
+      getIt<ExpenseLocalDataSource>(),
+      getIt<ExpenseRemoteDataSource>(),
       getIt<ExpensesDataNotifier>(),
     ),
   );

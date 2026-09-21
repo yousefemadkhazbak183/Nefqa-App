@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nefqa/core/network/sync_service.dart';
 import 'package:nefqa/core/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,6 +19,9 @@ Future<void> main() async {
   );
 
   setupServiceLocator();
+
+  await getIt<ThemeNotifier>().loadTheme();
+  getIt<SyncService>().start();
 
   runApp(const MyApp());
 }
