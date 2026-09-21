@@ -15,9 +15,7 @@ class ExpenseRemoteDataSource {
         .order('date', ascending: false)
         .timeout(_timeoutDuration);
 
-    return (response as List)
-        .map((json) => Expense.fromJson(json))
-        .toList();
+    return (response as List).map((json) => Expense.fromJson(json)).toList();
   }
 
   Future<Expense> addExpense(Expense expense) async {

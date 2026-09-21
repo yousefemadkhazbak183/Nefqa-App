@@ -23,8 +23,9 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
       await _localDataSource.cacheExpenses(expenses);
 
       // نضيف أي مصاريف لسه متعملهاش sync (اتعملت offline)
-      final pending = (await _localDataSource.getUnsyncedExpenses())
-          .where((e) => e.userId == userId);
+      final pending = (await _localDataSource.getUnsyncedExpenses()).where(
+        (e) => e.userId == userId,
+      );
 
       final combined = [...pending, ...expenses]
         ..sort((a, b) => b.date.compareTo(a.date));
@@ -35,7 +36,9 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
         final cachedExpenses = await _localDataSource.getExpenses(userId);
         return Success(cachedExpenses);
       } catch (_) {
-        return  Failure('Failed to load expenses. Please check your connection.');
+        return Failure(
+          'Failed to load expenses. Please check your connection.',
+        );
       }
     }
   }
@@ -55,7 +58,7 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
         await _localDataSource.cacheExpenses([offlineExpense]);
         return Success(offlineExpense);
       } catch (_) {
-        return  Failure('Failed to add expense. Please try again.');
+        return Failure('Failed to add expense. Please try again.');
       }
     }
   }
@@ -67,7 +70,7 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
       await _localDataSource.cacheExpenses([updatedExpense]);
       return Success(updatedExpense);
     } catch (_) {
-      return  Failure('Failed to update expense. Please try again.');
+      return Failure('Failed to update expense. Please try again.');
     }
   }
 
@@ -78,7 +81,7 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
       await _localDataSource.deleteExpense(id);
       return Success(null);
     } catch (_) {
-      return  Failure('Failed to delete expense. Please try again.');
+      return Failure('Failed to delete expense. Please try again.');
     }
   }
 }
