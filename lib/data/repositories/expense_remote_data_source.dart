@@ -3,6 +3,7 @@ import '../models/expense.dart';
 
 class ExpenseRemoteDataSource {
   final supabase.SupabaseClient _supabaseClient;
+  static const _timeoutDuration = Duration(seconds: 5);
 
   ExpenseRemoteDataSource(this._supabaseClient);
 
@@ -11,9 +12,12 @@ class ExpenseRemoteDataSource {
         .from('expenses')
         .select()
         .eq('user_id', userId)
-        .order('date', ascending: false);
+        .order('date', ascending: false)
+        .timeout(_timeoutDuration);
 
-    return (response as List).map((json) => Expense.fromJson(json)).toList();
+    return (response as List)
+        .map((json) => Expense.fromJson(json))
+        .toList();
   }
 
   Future<Expense> addExpense(Expense expense) async {
@@ -23,7 +27,8 @@ class ExpenseRemoteDataSource {
         .from('expenses')
         .insert(json)
         .select()
-        .single();
+        .single()
+        .timeout(_timeoutDuration);
 
     return Expense.fromJson(response);
   }
@@ -34,12 +39,17 @@ class ExpenseRemoteDataSource {
         .update(expense.toJson())
         .eq('id', expense.id!)
         .select()
-        .single();
+        .single()
+        .timeout(_timeoutDuration);
 
     return Expense.fromJson(response);
   }
 
   Future<void> deleteExpense(int id) async {
-    await _supabaseClient.from('expenses').delete().eq('id', id);
+    await _supabaseClient
+        .from('expenses')
+        .delete()
+        .eq('id', id)
+        .timeout(_timeoutDuration);
   }
 }
