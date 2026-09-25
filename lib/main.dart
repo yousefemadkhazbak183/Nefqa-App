@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nefqa/core/network/sync_service.dart';
 import 'package:nefqa/core/theme/app_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:requests_inspector/requests_inspector.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/di/service_locator.dart';
 import 'core/route/app_router.dart';
@@ -23,7 +25,7 @@ Future<void> main() async {
   await getIt<ThemeNotifier>().loadTheme();
   getIt<SyncService>().start();
 
-  runApp(const MyApp());
+  runApp(RequestsInspector(enabled: kDebugMode, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
         builder: (context, themeNotifier, _) {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
+
             title: 'Nafqa',
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
