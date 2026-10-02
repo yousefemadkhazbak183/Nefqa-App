@@ -25,7 +25,7 @@ Future<void> main() async {
   await getIt<ThemeNotifier>().loadTheme();
   getIt<SyncService>().start();
 
-  runApp(RequestsInspector(enabled: kDebugMode, child: const MyApp()));
+  runApp(const RequestsInspector(enabled: kDebugMode, child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

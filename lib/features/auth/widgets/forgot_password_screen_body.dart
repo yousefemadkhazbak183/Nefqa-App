@@ -65,7 +65,7 @@ class _ForgotPasswordScreenBodyState extends State<ForgotPasswordScreenBody> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (viewModel.resetPasswordCommand.completed) {
-                  return Text(
+                  return const Text(
                     'Check your email for reset instructions.',
                     style: TextStyle(color: AppColors.categoryTeal),
                   );
