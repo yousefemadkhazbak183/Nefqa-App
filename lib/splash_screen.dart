@@ -63,10 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(height: 6),
             Text(
               'Track every expense',
-              style: TextStyle(
-                fontSize: 13,
-                color: AppColors.textSecondary(context),
-              ),
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary(context)),
             ),
           ],
         ),

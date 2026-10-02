@@ -25,9 +25,7 @@ void main() {
 
       expect(viewModel.resetPasswordCommand.completed, true);
 
-      verify(
-        () => mockAuthRepository.resetPassword(email: 'test@test.com'),
-      ).called(1);
+      verify(() => mockAuthRepository.resetPassword(email: 'test@test.com')).called(1);
     });
 
     test('reset password fails when email not found', () async {

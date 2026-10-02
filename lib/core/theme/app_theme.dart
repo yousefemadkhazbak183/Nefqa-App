@@ -27,9 +27,7 @@ class AppTheme {
           backgroundColor: AppColors.accentDark,
           foregroundColor: AppColors.backgroundDark,
           minimumSize: const Size.fromHeight(48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: const TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontWeight: FontWeight.w600,
@@ -79,9 +77,7 @@ class AppTheme {
           backgroundColor: AppColors.accentLight,
           foregroundColor: AppColors.backgroundLight,
           minimumSize: const Size.fromHeight(48),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: const TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontWeight: FontWeight.w600,

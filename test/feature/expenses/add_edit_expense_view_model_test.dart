@@ -101,28 +101,25 @@ void main() {
       expect(viewModel.isEditing, true);
     });
 
-    test(
-      'calls updateExpense (not addExpense) and keeps original id',
-      () async {
-        when(() => mockExpenseRepository.updateExpense(any())).thenAnswer((
-          invocation,
-        ) async {
-          final passedExpense = invocation.positionalArguments[0] as Expense;
-          expect(passedExpense.id, 5);
-          return Success(passedExpense);
-        });
+    test('calls updateExpense (not addExpense) and keeps original id', () async {
+      when(() => mockExpenseRepository.updateExpense(any())).thenAnswer((
+        invocation,
+      ) async {
+        final passedExpense = invocation.positionalArguments[0] as Expense;
+        expect(passedExpense.id, 5);
+        return Success(passedExpense);
+      });
 
-        await viewModel.saveCommand.execute((
-          amount: 200,
-          category: ExpenseCategory.bills,
-          date: DateTime(2026, 2, 1),
-          note: 'Updated note',
-        ));
+      await viewModel.saveCommand.execute((
+        amount: 200,
+        category: ExpenseCategory.bills,
+        date: DateTime(2026, 2, 1),
+        note: 'Updated note',
+      ));
 
-        expect(viewModel.saveCommand.completed, true);
-        verify(() => mockExpenseRepository.updateExpense(any())).called(1);
-        verifyNever(() => mockExpenseRepository.addExpense(any()));
-      },
-    );
+      expect(viewModel.saveCommand.completed, true);
+      verify(() => mockExpenseRepository.updateExpense(any())).called(1);
+      verifyNever(() => mockExpenseRepository.addExpense(any()));
+    });
   });
 }

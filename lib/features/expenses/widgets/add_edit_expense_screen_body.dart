@@ -11,8 +11,7 @@ class AddEditExpenseScreenBody extends StatefulWidget {
   const AddEditExpenseScreenBody({super.key});
 
   @override
-  State<AddEditExpenseScreenBody> createState() =>
-      _AddEditExpenseScreenBodyState();
+  State<AddEditExpenseScreenBody> createState() => _AddEditExpenseScreenBodyState();
 }
 
 class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
@@ -57,9 +56,7 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
     final viewModel = context.watch<AddEditExpenseViewModel>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(viewModel.isEditing ? 'Edit expense' : 'Add expense'),
-      ),
+      appBar: AppBar(title: Text(viewModel.isEditing ? 'Edit expense' : 'Add expense')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -68,23 +65,14 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
-              style: TextStyle(
-                color: AppColors.textPrimary(context),
-                fontSize: 22,
-              ),
-              decoration: const InputDecoration(
-                labelText: 'Amount',
-                suffixText: 'EGP',
-              ),
+              style: TextStyle(color: AppColors.textPrimary(context), fontSize: 22),
+              decoration: const InputDecoration(labelText: 'Amount', suffixText: 'EGP'),
             ),
             const SizedBox(height: 16),
 
             Text(
               'Category',
-              style: TextStyle(
-                fontSize: 13,
-                color: AppColors.textSecondary(context),
-              ),
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary(context)),
             ),
             const SizedBox(height: 8),
             Wrap(
@@ -96,18 +84,13 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
                 return GestureDetector(
                   onTap: () => setState(() => _selectedCategory = category),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 10,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                     decoration: BoxDecoration(
                       color: selected
                           ? color.withValues(alpha: 0.18)
                           : AppColors.surface(context),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: selected ? color : Colors.transparent,
-                      ),
+                      border: Border.all(color: selected ? color : Colors.transparent),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -178,14 +161,10 @@ class _AddEditExpenseScreenBodyState extends State<AddEditExpenseScreenBody> {
                       amount: amount,
                       category: _selectedCategory,
                       date: _selectedDate,
-                      note: _noteController.text.isEmpty
-                          ? null
-                          : _noteController.text,
+                      note: _noteController.text.isEmpty ? null : _noteController.text,
                     ));
                   },
-                  child: Text(
-                    viewModel.isEditing ? 'Save changes' : 'Add expense',
-                  ),
+                  child: Text(viewModel.isEditing ? 'Save changes' : 'Add expense'),
                 );
               },
             ),

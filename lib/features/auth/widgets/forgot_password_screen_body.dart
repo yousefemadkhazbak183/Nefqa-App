@@ -8,8 +8,7 @@ class ForgotPasswordScreenBody extends StatefulWidget {
   const ForgotPasswordScreenBody({super.key});
 
   @override
-  State<ForgotPasswordScreenBody> createState() =>
-      _ForgotPasswordScreenBodyState();
+  State<ForgotPasswordScreenBody> createState() => _ForgotPasswordScreenBodyState();
 }
 
 class _ForgotPasswordScreenBodyState extends State<ForgotPasswordScreenBody> {
@@ -44,10 +43,7 @@ class _ForgotPasswordScreenBodyState extends State<ForgotPasswordScreenBody> {
             const SizedBox(height: 6),
             Text(
               "We'll send you a link to reset your password",
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.textSecondary(context),
-              ),
+              style: TextStyle(fontSize: 14, color: AppColors.textSecondary(context)),
             ),
             const SizedBox(height: 32),
 
@@ -72,9 +68,7 @@ class _ForgotPasswordScreenBodyState extends State<ForgotPasswordScreenBody> {
                 }
                 return ElevatedButton(
                   onPressed: () {
-                    viewModel.resetPasswordCommand.execute(
-                      _emailController.text,
-                    );
+                    viewModel.resetPasswordCommand.execute(_emailController.text);
                   },
                   child: const Text('Send reset email'),
                 );
@@ -85,8 +79,7 @@ class _ForgotPasswordScreenBodyState extends State<ForgotPasswordScreenBody> {
               listenable: viewModel.resetPasswordCommand,
               builder: (context, _) {
                 if (viewModel.resetPasswordCommand.error) {
-                  final result =
-                      viewModel.resetPasswordCommand.result as Failure;
+                  final result = viewModel.resetPasswordCommand.result as Failure;
                   return Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Text(

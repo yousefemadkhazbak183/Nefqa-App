@@ -10,10 +10,7 @@ abstract class AuthRepository {
     required String name,
   });
 
-  Future<Result<AppUser>> login({
-    required String email,
-    required String password,
-  });
+  Future<Result<AppUser>> login({required String email, required String password});
 
   Future<Result<void>> logout();
 
@@ -27,10 +24,7 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._supabaseClient);
 
   @override
-  Future<Result<AppUser>> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<Result<AppUser>> login({required String email, required String password}) async {
     try {
       final response = await _supabaseClient.auth.signInWithPassword(
         email: email,

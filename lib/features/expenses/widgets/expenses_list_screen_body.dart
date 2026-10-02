@@ -49,9 +49,9 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
 
   void _forceSync() {
     getIt<SyncService>().syncPendingExpenses();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Syncing pending expenses...')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Syncing pending expenses...')));
   }
 
   @override
@@ -67,9 +67,7 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
           actions: [
             IconButton(
               icon: Icon(
-                themeNotifier.isDark
-                    ? Icons.light_mode_rounded
-                    : Icons.dark_mode_rounded,
+                themeNotifier.isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
               ),
               onPressed: () => context.read<ThemeNotifier>().toggleTheme(),
             ),
@@ -97,10 +95,7 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
             if (command.completed) {
               final result = command.result as Success<List<Expense>>;
               final expenses = result.data;
-              final total = expenses.fold<double>(
-                0,
-                (sum, e) => sum + e.amount,
-              );
+              final total = expenses.fold<double>(0, (sum, e) => sum + e.amount);
 
               return Padding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
@@ -128,9 +123,7 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _isHidden
-                                  ? '•••• EGP'
-                                  : '${total.toStringAsFixed(0)} EGP',
+                              _isHidden ? '•••• EGP' : '${total.toStringAsFixed(0)} EGP',
                               style: TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w600,
@@ -156,9 +149,7 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
                           ? Center(
                               child: Text(
                                 'No expenses yet.',
-                                style: TextStyle(
-                                  color: AppColors.textMuted(context),
-                                ),
+                                style: TextStyle(color: AppColors.textMuted(context)),
                               ),
                             )
                           : ListView.separated(
@@ -170,9 +161,7 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
                               itemBuilder: (context, index) {
                                 final expense = expenses[index];
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 6,
-                                  ),
+                                  padding: const EdgeInsets.symmetric(vertical: 6),
                                   child: InkWell(
                                     onTap: () async {
                                       await context.push(
@@ -187,9 +176,7 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
                                       }
                                     },
                                     onLongPress: () {
-                                      viewModel.deleteExpenseCommand.execute(
-                                        expense.id!,
-                                      );
+                                      viewModel.deleteExpenseCommand.execute(expense.id!);
                                     },
                                     child: Row(
                                       children: [
@@ -197,44 +184,33 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
                                           width: 36,
                                           height: 36,
                                           decoration: BoxDecoration(
-                                            color: AppColors.surfaceElevated(
-                                              context,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
+                                            color: AppColors.surfaceElevated(context),
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
                                           child: Icon(
                                             categoryIcon(expense.category),
                                             size: 18,
-                                            color: categoryColor(
-                                              expense.category,
-                                            ),
+                                            color: categoryColor(expense.category),
                                           ),
                                         ),
                                         const SizedBox(width: 12),
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 expense.category.toLabel(),
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w500,
-                                                  color: AppColors.textPrimary(
-                                                    context,
-                                                  ),
+                                                  color: AppColors.textPrimary(context),
                                                 ),
                                               ),
                                               Text(
                                                 '${expense.date.day}/${expense.date.month}/${expense.date.year}',
                                                 style: TextStyle(
                                                   fontSize: 12,
-                                                  color: AppColors.textMuted(
-                                                    context,
-                                                  ),
+                                                  color: AppColors.textMuted(context),
                                                 ),
                                               ),
                                             ],
@@ -247,9 +223,7 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
-                                            color: AppColors.textPrimary(
-                                              context,
-                                            ),
+                                            color: AppColors.textPrimary(context),
                                           ),
                                         ),
                                       ],
@@ -273,10 +247,7 @@ class _ExpensesListScreenBodyState extends State<ExpensesListScreenBody> {
           onPressed: () async {
             await context.push('/expenses/add');
             if (context.mounted) {
-              context
-                  .read<ExpensesListViewModel>()
-                  .loadExpensesCommand
-                  .execute();
+              context.read<ExpensesListViewModel>().loadExpensesCommand.execute();
             }
           },
           child: const Icon(Icons.add),

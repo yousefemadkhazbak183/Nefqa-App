@@ -13,11 +13,7 @@ class StatisticsViewModel extends ChangeNotifier {
   final AuthRepository _authRepository;
   final ExpensesDataNotifier _dataNotifier;
 
-  StatisticsViewModel(
-    this._expenseRepository,
-    this._authRepository,
-    this._dataNotifier,
-  ) {
+  StatisticsViewModel(this._expenseRepository, this._authRepository, this._dataNotifier) {
     loadStatisticsCommand = SimpleCommand<ExpenseStatics>(_loadStatistics);
     _dataNotifier.addListener(_onExpensesChanged);
   }

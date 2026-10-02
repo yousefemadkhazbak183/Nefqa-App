@@ -65,8 +65,7 @@ void main() {
 
       await viewModel.loadStatisticsCommand.execute();
 
-      final result =
-          viewModel.loadStatisticsCommand.result as Success<ExpenseStatics>;
+      final result = viewModel.loadStatisticsCommand.result as Success<ExpenseStatics>;
       final stats = result.data;
 
       expect(stats.total, 350);

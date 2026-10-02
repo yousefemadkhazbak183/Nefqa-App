@@ -36,9 +36,7 @@ class _StatisticsScreenBodyState extends State<StatisticsScreenBody> {
         actions: [
           IconButton(
             icon: Icon(
-              themeNotifier.isDark
-                  ? Icons.light_mode_rounded
-                  : Icons.dark_mode_rounded,
+              themeNotifier.isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
             ),
             onPressed: () => context.read<ThemeNotifier>().toggleTheme(),
           ),
@@ -124,14 +122,10 @@ class _StatisticsScreenBodyState extends State<StatisticsScreenBody> {
                   Expanded(
                     child: ListView.separated(
                       itemCount: stats.categoryTotal.length,
-                      separatorBuilder: (_, _) => Divider(
-                        height: 1,
-                        color: AppColors.surfaceElevated(context),
-                      ),
+                      separatorBuilder: (_, _) =>
+                          Divider(height: 1, color: AppColors.surfaceElevated(context)),
                       itemBuilder: (context, index) {
-                        final entry = stats.categoryTotal.entries.elementAt(
-                          index,
-                        );
+                        final entry = stats.categoryTotal.entries.elementAt(index);
                         final percentage = (entry.value / stats.total) * 100;
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
