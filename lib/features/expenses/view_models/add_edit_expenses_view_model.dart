@@ -23,12 +23,7 @@ class AddEditExpenseViewModel extends ChangeNotifier {
     saveCommand =
         ParameterizedCommand<
           Expense,
-          ({
-            double amount,
-            ExpenseCategory category,
-            DateTime date,
-            String? note,
-          })
+          ({double amount, ExpenseCategory category, DateTime date, String? note})
         >(_save);
   }
 
@@ -41,8 +36,7 @@ class AddEditExpenseViewModel extends ChangeNotifier {
   bool get isEditing => existingExpense != null;
 
   Future<Result<Expense>> _save(
-    ({double amount, ExpenseCategory category, DateTime date, String? note})
-    args,
+    ({double amount, ExpenseCategory category, DateTime date, String? note}) args,
   ) async {
     final userId = _authRepository.getCurrentUserId();
     if (userId == null) {

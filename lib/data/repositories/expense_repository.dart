@@ -36,9 +36,7 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
         final cachedExpenses = await _localDataSource.getExpenses(userId);
         return Success(cachedExpenses);
       } catch (_) {
-        return Failure(
-          'Failed to load expenses. Please check your connection.',
-        );
+        return Failure('Failed to load expenses. Please check your connection.');
       }
     }
   }

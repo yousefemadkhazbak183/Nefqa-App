@@ -29,13 +29,9 @@ void setupServiceLocator() {
   );
 
   // Auth ViewModels — Factory
-  getIt.registerFactory<LoginViewModel>(
-    () => LoginViewModel(getIt<AuthRepository>()),
-  );
+  getIt.registerFactory<LoginViewModel>(() => LoginViewModel(getIt<AuthRepository>()));
 
-  getIt.registerFactory<SignupViewModel>(
-    () => SignupViewModel(getIt<AuthRepository>()),
-  );
+  getIt.registerFactory<SignupViewModel>(() => SignupViewModel(getIt<AuthRepository>()));
 
   getIt.registerFactory<ForgotPasswordViewModel>(
     () => ForgotPasswordViewModel(getIt<AuthRepository>()),
@@ -48,9 +44,7 @@ void setupServiceLocator() {
     () => ExpenseRemoteDataSource(getIt<SupabaseClient>()),
   );
 
-  getIt.registerLazySingleton<ExpenseLocalDataSource>(
-    () => ExpenseLocalDataSource(),
-  );
+  getIt.registerLazySingleton<ExpenseLocalDataSource>(() => ExpenseLocalDataSource());
 
   // Expense Repository — Singleton
   getIt.registerLazySingleton<ExpenseRepository>(
@@ -61,9 +55,7 @@ void setupServiceLocator() {
   );
 
   // Cross-feature data change notifier — Singleton
-  getIt.registerLazySingleton<ExpensesDataNotifier>(
-    () => ExpensesDataNotifier(),
-  );
+  getIt.registerLazySingleton<ExpensesDataNotifier>(() => ExpensesDataNotifier());
 
   // Expenses ViewModels — Factory
   getIt.registerFactory<ExpensesListViewModel>(

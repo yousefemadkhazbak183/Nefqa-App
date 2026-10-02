@@ -12,11 +12,7 @@ class SyncService {
   StreamSubscription<List<ConnectivityResult>>? _subscription;
   bool _isSyncing = false;
 
-  SyncService(
-    this._localDataSource,
-    this._remoteDataSource,
-    this._dataNotifier,
-  );
+  SyncService(this._localDataSource, this._remoteDataSource, this._dataNotifier);
 
   void start() {
     _subscription = Connectivity().onConnectivityChanged.listen((results) {

@@ -8,10 +8,9 @@ class LoginViewModel extends ChangeNotifier {
   final AuthRepository _authRepository;
 
   LoginViewModel(this._authRepository) {
-    loginCommand =
-        ParameterizedCommand<AppUser, ({String email, String password})>(
-          _login,
-        );
+    loginCommand = ParameterizedCommand<AppUser, ({String email, String password})>(
+      _login,
+    );
   }
 
   late final ParameterizedCommand<AppUser, ({String email, String password})>

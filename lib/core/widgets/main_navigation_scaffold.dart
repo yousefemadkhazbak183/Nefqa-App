@@ -15,10 +15,7 @@ class MainNavigationScaffold extends StatelessWidget {
         onTap: (index) => navigationShell.goBranch(index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Expenses'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart),
-            label: 'Statistics',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.pie_chart), label: 'Statistics'),
         ],
       ),
     );

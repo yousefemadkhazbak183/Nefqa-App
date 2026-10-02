@@ -49,8 +49,7 @@ void main() {
       await viewModel.loadExpensesCommand.execute();
 
       expect(viewModel.loadExpensesCommand.completed, true);
-      final result =
-          viewModel.loadExpensesCommand.result as Success<List<Expense>>;
+      final result = viewModel.loadExpensesCommand.result as Success<List<Expense>>;
       expect(result.data.length, 1);
     });
 

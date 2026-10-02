@@ -47,10 +47,7 @@ class _SignupScreenBodyState extends State<SignupScreenBody> {
             const SizedBox(height: 6),
             Text(
               'Start tracking your expenses with Nafqa',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.textSecondary(context),
-              ),
+              style: TextStyle(fontSize: 14, color: AppColors.textSecondary(context)),
             ),
             const SizedBox(height: 32),
 

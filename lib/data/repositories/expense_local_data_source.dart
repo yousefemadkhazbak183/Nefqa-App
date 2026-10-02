@@ -54,11 +54,7 @@ class ExpenseLocalDataSource {
 
   Future<List<Expense>> getUnsyncedExpenses() async {
     final db = await _db;
-    final maps = await db.query(
-      'expenses',
-      where: 'is_synced = ?',
-      whereArgs: [0],
-    );
+    final maps = await db.query('expenses', where: 'is_synced = ?', whereArgs: [0]);
     return maps.map((map) => Expense.fromJson(map)).toList();
   }
 

@@ -32,10 +32,7 @@ void main() {
         ),
       ).thenAnswer((_) async => Success(fakeUser));
 
-      await viewModel.loginCommand.execute((
-        email: 'test@test.com',
-        password: '123456',
-      ));
+      await viewModel.loginCommand.execute((email: 'test@test.com', password: '123456'));
 
       expect(viewModel.loginCommand.completed, true);
       expect(viewModel.loginCommand.running, false);
